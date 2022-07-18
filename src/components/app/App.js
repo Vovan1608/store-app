@@ -1,9 +1,13 @@
+import ErrorBoundary from '../errorBoundary';
+
 const App = () => {
-  return (
-    <div>
-      Hello
-    </div>
-  );
+    return (
+        <ErrorBoundary error={false}>
+            <div>
+                Hello
+            </div>
+        </ErrorBoundary>
+    );
 }
 
 export default App;
