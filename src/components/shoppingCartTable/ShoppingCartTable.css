@@ -6,5 +6,10 @@
 
 .shopping-cart-table button {
     margin-left: 5px;
-    margin-top: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: end;
+    text-align: start;
 }

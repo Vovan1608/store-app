@@ -6,18 +6,21 @@ import { compose } from '../../utils';
 import BookListItem from '../bookListItem';
 import { withBookstoreService } from '../hoc';
 import ErrorIndicator from '../errorIndicator';
-import { fetchBooks } from '../../actions';
+import { fetchBooks, bookAddedToCart } from '../../actions';
 
 import './BooksListContainer.css';
 
-const BookList = ({ books }) => {
+const BookList = ({ books, onAddedToCart }) => {
     return (
         <ul className='book-list'>
             {
                 books.map(({ id, ...other }) => {
                     return (
                         <li key={id}>
-                            <BookListItem book={other} />
+                            <BookListItem
+                                book={other}
+                                onAddedToCart={() => onAddedToCart(id)}
+                            />
                         </li>
                     );
                 })
@@ -30,7 +33,8 @@ const BooksListContainer = ({
     books,
     isError,
     isLoading,
-    fetchBooks
+    fetchBooks,
+    onAddedToCart
 }) => {
 
     useEffect(() => {
@@ -38,14 +42,14 @@ const BooksListContainer = ({
     }, []);
 
     if (isLoading) {
-        return <Spinner />
+        return <Spinner />;
     }
 
     if (isError) {
-        return <ErrorIndicator />
+        return <ErrorIndicator />;
     }
 
-    return <BookList books={books} />;
+    return <BookList books={books} onAddedToCart={onAddedToCart} />;
 };
 
 const mapStateToProps = ({ books, isLoading, isError }) => {
@@ -56,7 +60,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const { bookstoreService } = ownProps;
 
     return {
-        fetchBooks: fetchBooks(bookstoreService, dispatch)
+        fetchBooks: fetchBooks(bookstoreService, dispatch),
+        onAddedToCart: (id) => dispatch(bookAddedToCart(id))
     };
 };
 
