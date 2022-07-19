@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import ErrorBoundary from './components/errorBoundary';
 import BookstoreService from './services/BookstoreService';
 import { BookstoreServiceProvider } from './components/bookstoreServiceContext';
 
@@ -17,12 +16,10 @@ const bookstoreService = new BookstoreService();
 
 root.render(
     <Provider store={store}>
-        <ErrorBoundary error={false}>
-            <BookstoreServiceProvider value={bookstoreService}>
-                <Router>
-                    <App />
-                </Router>
-            </BookstoreServiceProvider>
-        </ErrorBoundary>
+        <BookstoreServiceProvider value={bookstoreService}>
+            <Router>
+                <App />
+            </Router>
+        </BookstoreServiceProvider>
     </Provider>
 );

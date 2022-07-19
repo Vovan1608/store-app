@@ -1,19 +1,33 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import Spinner from '../spinner';
 import { compose } from '../../utils';
 import BookListItem from '../bookListItem';
-import { booksLoaded } from '../../actions';
 import { withBookstoreService } from '../hoc';
+import ErrorIndicator from '../errorIndicator';
+import { fetchBooks } from '../../actions';
 
 import './BooksList.css';
 
-const BooksList = ({ books, bookstoreService, booksLoaded }) => {
-    useEffect(() => {
-        const data = bookstoreService.getBooks();
+const BooksList = ({
+    books,
+    isError,
+    isLoading,
+    fetchBooks
+}) => {
 
-        booksLoaded(data);
+    useEffect(() => {
+        fetchBooks();
     }, []);
+
+    if (isLoading) {
+        return <Spinner />
+    }
+
+    if (isError) {
+        return <ErrorIndicator />
+    }
 
     return (
         <ul className='book-list'>
@@ -30,12 +44,16 @@ const BooksList = ({ books, bookstoreService, booksLoaded }) => {
     );
 };
 
-const mapStateToProps = ({ books }) => {
-    return { books };
+const mapStateToProps = ({ books, isLoading, isError }) => {
+    return { books, isLoading, isError };
 };
 
-const mapDispatchToProps = {
-    booksLoaded
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const { bookstoreService } = ownProps;
+
+    return {
+        fetchBooks: fetchBooks(bookstoreService, dispatch)
+    };
 };
 
 export default compose(
