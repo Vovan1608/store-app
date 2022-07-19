@@ -1,10 +1,10 @@
-import BooksList from '../booksList';
+import BooksListContainer from '../booksListContainer';
 import ShoppingCartTable from '../shoppingCartTable';
 
 const Home = () => {
     return (
         <div>
-            <BooksList />
+            <BooksListContainer />
             <ShoppingCartTable />
         </div>
     );

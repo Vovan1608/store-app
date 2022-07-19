@@ -8,9 +8,25 @@ import { withBookstoreService } from '../hoc';
 import ErrorIndicator from '../errorIndicator';
 import { fetchBooks } from '../../actions';
 
-import './BooksList.css';
+import './BooksListContainer.css';
 
-const BooksList = ({
+const BookList = ({ books }) => {
+    return (
+        <ul className='book-list'>
+            {
+                books.map(({ id, ...other }) => {
+                    return (
+                        <li key={id}>
+                            <BookListItem book={other} />
+                        </li>
+                    );
+                })
+            }
+        </ul>
+    );
+};
+
+const BooksListContainer = ({
     books,
     isError,
     isLoading,
@@ -29,19 +45,7 @@ const BooksList = ({
         return <ErrorIndicator />
     }
 
-    return (
-        <ul className='book-list'>
-            {
-                books.map(({ id, ...other }) => {
-                    return (
-                        <li key={id}>
-                            <BookListItem book={other} />
-                        </li>
-                    );
-                })
-            }
-        </ul>
-    );
+    return <BookList books={books} />;
 };
 
 const mapStateToProps = ({ books, isLoading, isError }) => {
@@ -59,4 +63,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default compose(
     withBookstoreService(),
     connect(mapStateToProps, mapDispatchToProps)
-)(BooksList);
+)(BooksListContainer);
