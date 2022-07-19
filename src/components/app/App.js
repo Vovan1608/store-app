@@ -1,25 +1,12 @@
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-
-import ErrorBoundary from '../errorBoundary';
-import BookstoreService from '../../services/BookstoreService';
-import { BookstoreServiceProvider } from '../bookstoreServiceContext';
-
-import store from '../../store';
-
-const bookstoreService = new BookstoreService();
+import { Route, Routes } from 'react-router-dom';
+import { Cart, Home } from '../pages';
 
 const App = () => {
     return (
-        <Provider store={store}>
-            <ErrorBoundary error={false}>
-                <BookstoreServiceProvider value={bookstoreService}>
-                    <Router>
-                        <h1>Hello</h1>
-                    </Router>
-                </BookstoreServiceProvider>
-            </ErrorBoundary>
-        </Provider>
+        <Routes>
+            <Route path='/' element={<Home />} exact />
+            <Route path='/cart' element={<Cart />} />
+        </Routes>
     );
 }
 

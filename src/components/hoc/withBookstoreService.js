@@ -1,7 +1,7 @@
 import { BookstoreServiceConsumer } from '../bookstoreServiceContext';
 
 const withBookstoreService = () => (Component) => {
-    return function F(props) {
+    return (props) => {
         return (
             <BookstoreServiceConsumer>
                 {
