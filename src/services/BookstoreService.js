@@ -11,7 +11,7 @@ export default class BookstoreService {
             id: 2,
             title: 'Relese it!',
             author: 'The RF',
-            price: 115,
+            price: 25,
             coverImage: 'https://images-na.ssl-images-amazon.com/images/I/414CRjLjwgL._SX403_BO1,204,203,200_.jpg'
         }
     ];

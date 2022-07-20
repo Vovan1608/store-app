@@ -10,14 +10,14 @@ import './ShoppingCartTable.css';
 
 const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) => {
     const renderRow = (item, i) => {
-        const { id, title, count, total } = item;
+        const { id, title, count, total: totalInItem } = item;
 
         return (
             <tr key={id}>
                 <td>{i + 1}</td>
                 <td>{title}</td>
                 <td>{count}</td>
-                <td>${total}</td>
+                <td>${totalInItem}</td>
                 <td className='button-container'>
                     <button
                         onClick={() => onIncrease(id)}
