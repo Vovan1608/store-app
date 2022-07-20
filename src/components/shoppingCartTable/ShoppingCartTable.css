@@ -13,3 +13,7 @@
     justify-content: end;
     text-align: start;
 }
+
+thead tr td:last-child {
+    text-align: right;
+}

@@ -1,5 +1,11 @@
 import { connect } from 'react-redux';
 
+import {
+    bookAddedToCart,
+    bookRemovedFromCart,
+    allBooksRemovedFromCart
+} from '../../actions';
+
 import './ShoppingCartTable.css';
 
 const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) => {
@@ -14,12 +20,6 @@ const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) =
                 <td>${total}</td>
                 <td className='button-container'>
                     <button
-                        onClick={() => onDelete(id)}
-                        className="btn btn-outline-danger btn-sm"
-                    >
-                        <i className="fa-solid fa-trash-can" />
-                    </button>
-                    <button
                         onClick={() => onIncrease(id)}
                         className="btn btn-outline-success btn-sm"
                     >
@@ -30,6 +30,12 @@ const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) =
                         className="btn btn-outline-warning btn-sm"
                     >
                         <i className="fa fa-minus-circle" />
+                    </button>
+                    <button
+                        onClick={() => onDelete(id)}
+                        className="btn btn-outline-danger btn-sm"
+                    >
+                        <i className="fa-solid fa-trash-can" />
                     </button>
                 </td>
             </tr>
@@ -71,18 +77,10 @@ const mapStateToProps = ({ cartItems, orderTotal }) => {
     };
 };
 
-const mapDispatchToProps = () => {
-    return {
-        onDelete: (id) => {
-            console.log(`Deleted ${id}`);
-        },
-        onIncrease: (id) => {
-            console.log(`Increased ${id}`);
-        },
-        onDecrease: (id) => {
-            console.log(`Decreased ${id}`);
-        },
-    };
+const mapDispatchToProps = {
+    onIncrease: bookAddedToCart,
+    onDecrease: bookRemovedFromCart,
+    onDelete: allBooksRemovedFromCart
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCartTable);

@@ -1,9 +1,66 @@
 const initialState = {
-    books: [],
-    isLoading: true,
-    isError: false,
-    cartItems: [],
-    orderTotal: 220
+    bookList: {
+        books: [],
+        isLoading: true,
+        isError: false
+    },
+
+    shoppinfCart: {
+        cartItems: [],
+        orderTotal: 0
+    }
+};
+
+const updateCartItems = (cartItems, item, index) => {
+    if (item.count === 0) {
+        return [
+            ...cartItems.slice(0, index),
+            ...cartItems.slice(index + 1)
+        ];
+    }
+
+    if (index === -1) {
+        return [
+            ...cartItems,
+            item
+        ];
+    }
+
+    return [
+        ...cartItems.slice(0, index),
+        item,
+        ...cartItems.slice(index + 1)
+    ];
+};
+
+const updateCartItem = (book, item = {}, quantity) => {
+    const {
+        id = book.id,
+        title = book.title,
+        count = 0,
+        total = 0
+    } = item;
+
+    return {
+        id,
+        title,
+        count: count + quantity,
+        total: total + quantity * book.price
+    };
+};
+
+const updateOrder = (state, bookId, quantity) => {
+    const { books, cartItems } = state;
+
+    const book = books.find(({ id }) => id === bookId);
+    const itemIndex = books.findIndex(({ id }) => id === bookId);
+    const item = cartItems[itemIndex];
+    const newItem = updateCartItem(book, item, quantity);
+
+    return {
+        ...state,
+        cartItems: updateCartItems(cartItems, newItem, itemIndex)
+    };
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,19 +90,14 @@ const reducer = (state = initialState, action) => {
             };
 
         case 'BOOK_ADDED_TO_CARD':
-            const bookId = action.payload;
-            const book = state.books.find((book) => book.id === bookId);
-            const newItem = {
-                id: bookId,
-                title: book.title,
-                count: 1,
-                total: book.price
-            };
+            return updateOrder(state, action.payload, 1);
 
-            return {
-                ...state,
-                cartItems: [...state.cartItems, newItem]
-            };
+        case 'BOOK_REMOVED_FROM_CARD':
+            return updateOrder(state, action.payload, -1);
+
+        case 'ALL_BOOKS_REMOVED_FROM_CARD':
+            const item = state.cartItems.find(({ id }) => id === action.payload);
+            return updateOrder(state, action.payload, -item.count);
 
         default:
             return state;
