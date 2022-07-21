@@ -36,6 +36,21 @@ const updateCartItem = (book, item = {}, quantity) => {
     };
 };
 
+const updateOrderTotal = (cartItems) => {
+    if (cartItems.length === 0) {
+        return 0;
+    }
+
+    if (cartItems.length > 1) {
+        return cartItems.reduce((cur, next) => {
+
+            return cur.total + next.total;
+        });
+    }
+
+    return cartItems[0].total;
+};
+
 const updateOrder = (state, bookId, quantity) => {
     const { bookList: { books }, shoppingCart: { cartItems } } = state;
 
@@ -44,9 +59,12 @@ const updateOrder = (state, bookId, quantity) => {
     const item = cartItems[itemIndex];
     const newItem = updateCartItem(book, item, quantity);
 
+    const updatedCartItems = updateCartItems(cartItems, newItem, itemIndex);
+    const total = updateOrderTotal(updatedCartItems);
+
     return {
-        orderTotal: newItem.total,
-        cartItems: updateCartItems(cartItems, newItem, itemIndex)
+        orderTotal: total,
+        cartItems: updatedCartItems
     };
 };
 
