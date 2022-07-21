@@ -1,6 +1,9 @@
+import BooksListContainer from '../booksListContainer';
+import ShoppingCartTable from '../shoppingCartTable';
+
 const Cart = () => {
     return (
-        <h1>Cart page</h1>
+        <ShoppingCartTable />
     );
 };
 
